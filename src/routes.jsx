@@ -10,13 +10,11 @@ const routes = [
     path: '/',
     component: Index,
     name: 'Home',
-    exact: true,
   },
   {
     path: '/feature',
     component: Feature,
     name: 'Feature',
-    exact: true,
   },
 ];
 
@@ -24,11 +22,11 @@ const Routes = () => (
   <BrowserRouter>
     <Header title="Pitang 2" routes={routes} />
     <Switch>
-      {routes.map(({ component, path, exact }) => (
+      {routes.map(({ component, path }) => (
         <Route
+          exact
           key={path}
           path={path}
-          exact={exact}
           component={component}
         />
       ))}
