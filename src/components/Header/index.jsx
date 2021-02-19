@@ -7,7 +7,7 @@ const Header = ({ title, routes = [] }) => (
     <Navbar.Brand href="#home">{title}</Navbar.Brand>
     <Nav className="mr-auto">
       {routes.map((route) => (
-        <Link className="nav-link" to={route.path}>{route.name}</Link>
+        <Link key={route.path} className="nav-link" to={route.path}>{route.name}</Link>
       ))}
     </Nav>
   </Navbar>

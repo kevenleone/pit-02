@@ -1,15 +1,21 @@
 import React from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 
-import Header from './components/Header';
 import Index from './pages';
+import Header from './components/Header';
 import Feature from './pages/Features';
+import Todo from './pages/Todos';
 
 const routes = [
   {
     path: '/',
     component: Index,
     name: 'Home',
+  },
+  {
+    path: '/todo',
+    component: Todo,
+    name: 'Todo',
   },
   {
     path: '/feature',
