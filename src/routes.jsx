@@ -4,7 +4,8 @@ import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import Index from './pages';
 import Header from './components/Header';
 import Feature from './pages/Features';
-import Todo from './pages/Todos';
+import Todos from './pages/Todos';
+import Todo from './pages/Todos/Todo';
 
 const routes = [
   {
@@ -14,8 +15,14 @@ const routes = [
   },
   {
     path: '/todo',
+    component: Todos,
+    name: 'Todo',
+  },
+  {
+    path: '/todo/:id',
     component: Todo,
     name: 'Todo',
+    header: false,
   },
   {
     path: '/feature',

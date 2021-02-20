@@ -18,35 +18,9 @@
   },
   "todo": [
     {
-      "completed": true,
-      "title": "www 12345",
-      "id": 13,
-      "edit": false
-    },
-    {
-      "completed": true,
-      "title": "www",
-      "id": 14
-    },
-    {
-      "completed": true,
-      "title": "qweqweqxqxqxq",
-      "id": 15
-    },
-    {
-      "completed": true,
-      "title": "testando",
-      "id": 16
-    },
-    {
       "completed": false,
-      "title": "ooooo",
-      "id": 18
-    },
-    {
-      "completed": true,
-      "title": "iiiiooo",
-      "id": 19
+      "title": "www",
+      "id": 1
     }
   ]
 }

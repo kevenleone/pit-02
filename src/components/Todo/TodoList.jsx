@@ -3,9 +3,10 @@ import {
   Row, Button, Table,
 } from 'react-bootstrap';
 import { toast } from 'react-toastify';
+import { Link } from 'react-router-dom';
 import axios from '../../utils/api';
 
-const TodoList = ({ todos, setTodos }) => {
+const TodoList = ({ todos, setTodos, todoError }) => {
   const onCompleteTodo = async ({ target: { checked } }, todo) => {
     const newTodos = todos.map((_todo) => {
       if (_todo.id === todo.id) {
@@ -89,8 +90,8 @@ const TodoList = ({ todos, setTodos }) => {
           </tr>
         </thead>
         <tbody>
-          {todos.map((todo, index) => (
-            <tr>
+          {todos.length ? todos.map((todo, index) => (
+            <tr key={todo.id}>
               <td>
                 <input
                   onChange={(event) => onCompleteTodo(event, todo)}
@@ -108,9 +109,9 @@ const TodoList = ({ todos, setTodos }) => {
                     onChange={(event) => onChangeTodo(event, index)}
                   />
                 ) : (
-                  <span className={todo.completed ? 'completed' : ''}>
+                  <Link to={`/todo/${todo.id}`} className={todo.completed ? 'completed' : ''}>
                     {todo.title}
-                  </span>
+                  </Link>
                 )}
 
               </td>
@@ -125,7 +126,13 @@ const TodoList = ({ todos, setTodos }) => {
                 </Button>
               </td>
             </tr>
-          ))}
+          )) : (
+            <tr>
+              <td colSpan={3} align="center">
+                {todoError || 'No Data Found'}
+              </td>
+            </tr>
+          )}
         </tbody>
       </Table>
     </Row>
