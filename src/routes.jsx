@@ -3,7 +3,7 @@ import { BrowserRouter, Switch, Route } from 'react-router-dom';
 
 import Index from './pages';
 import Header from './components/Header';
-import Feature from './pages/Features';
+import User from './pages/User';
 import Todos from './pages/Todos';
 import Todo from './pages/Todos/Todo';
 
@@ -25,9 +25,9 @@ const routes = [
     header: false,
   },
   {
-    path: '/feature',
-    component: Feature,
-    name: 'Feature',
+    path: '/user',
+    component: User,
+    name: 'User',
   },
 ];
 

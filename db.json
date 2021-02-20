@@ -16,6 +16,18 @@
   "profile": {
     "name": "typicode"
   },
+  "user": [
+    {
+      "email": "keven.santos.@hotmail.com",
+      "user": "kevenleone",
+      "id": 1
+    },
+    {
+      "email": "joao..123.@hotmail.com",
+      "user": "joaozin",
+      "id": 2
+    }
+  ],
   "todo": [
     {
       "completed": false,
