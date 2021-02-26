@@ -1,0 +1,40 @@
+{
+  "user": [
+    {
+      "user": "wwwww",
+      "email": "qweqwe@hotmail.com",
+      "password": "1234",
+      "id": 1
+    },
+    {
+      "user": "Abc",
+      "email": "abc@hotmail.com",
+      "password": "123",
+      "id": 2
+    },
+    {
+      "user": "Keven 123",
+      "email": "keven123@hotmail.com",
+      "password": "123123123",
+      "id": 3
+    }
+  ],
+  "todo": [
+    {
+      "completed": false,
+      "title": "wwwww qwewww",
+      "id": 8,
+      "edit": false
+    },
+    {
+      "completed": false,
+      "title": "1123",
+      "id": 9
+    },
+    {
+      "completed": false,
+      "title": "www",
+      "id": 10
+    }
+  ]
+}

@@ -4,6 +4,7 @@ import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import Index from './pages';
 import Header from './components/Header';
 import User from './pages/User';
+import EditUser from './pages/User/edit-user';
 import Todos from './pages/Todos';
 import Todo from './pages/Todos/Todo';
 
@@ -28,6 +29,12 @@ const routes = [
     path: '/user',
     component: User,
     name: 'User',
+  },
+  {
+    path: '/user/:id',
+    component: EditUser,
+    name: 'User',
+    header: false,
   },
 ];
 

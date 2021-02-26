@@ -1,12 +1,15 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import {
   Row, Button, Table,
 } from 'react-bootstrap';
 import { toast } from 'react-toastify';
 import { Link } from 'react-router-dom';
 import axios from '../../utils/api';
+import TodosContext from '../../TodosContext';
 
-const TodoList = ({ todos, setTodos, todoError }) => {
+const TodoList = () => {
+  const [todos, setTodos] = useContext(TodosContext);
+
   const onCompleteTodo = async ({ target: { checked } }, todo) => {
     const newTodos = todos.map((_todo) => {
       if (_todo.id === todo.id) {
@@ -129,7 +132,7 @@ const TodoList = ({ todos, setTodos, todoError }) => {
           )) : (
             <tr>
               <td colSpan={3} align="center">
-                {todoError || 'No Data Found'}
+                No Data Found
               </td>
             </tr>
           )}

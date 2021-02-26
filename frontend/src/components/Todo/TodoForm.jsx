@@ -1,11 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import {
   Row, Col, Form, Button,
 } from 'react-bootstrap';
 import { toast } from 'react-toastify';
+import TodosContext from '../../TodosContext';
 import axios from '../../utils/api';
 
-export default function TodoForm({ todos, setTodos }) {
+export default function TodoForm() {
+  const [todos, setTodos] = useContext(TodosContext);
+
   const [text, setText] = useState('');
 
   const onAddTodo = async (event) => {

@@ -6,7 +6,9 @@ import axios from '../../utils/api';
 import Card from '../Card';
 import Table from '../Table';
 
-export default function index({ columns, endpoint, title }) {
+export default function index({
+  AddButton, refetchCount, columns, endpoint, title,
+}) {
   const [rows, setRows] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -23,18 +25,22 @@ export default function index({ columns, endpoint, title }) {
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [refetchCount]);
 
   return (
     <Container className="mt-5">
       <Card title={title}>
-        {loading ? (
-          <Spinner animation="border" role="status">
-            <span className="sr-only">Loading...</span>
-          </Spinner>
-        ) : (
-          <Table columns={columns} rows={rows} />
-        )}
+        <AddButton />
+
+        <div className="mt-4">
+          {loading ? (
+            <Spinner animation="border" role="status">
+              <span className="sr-only">Loading...</span>
+            </Spinner>
+          ) : (
+            <Table columns={columns} rows={rows} />
+          )}
+        </div>
       </Card>
     </Container>
   );
