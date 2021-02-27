@@ -1,7 +1,8 @@
+/* eslint-disable react/no-array-index-key */
 import React from 'react';
 import { Table } from 'react-bootstrap';
 
-export default function index({ columns = [], rows = [] }) {
+export default function TableComponent({ columns = [], rows = [] }) {
   return (
     <Table>
       <thead>
@@ -12,8 +13,8 @@ export default function index({ columns = [], rows = [] }) {
         </tr>
       </thead>
       <tbody>
-        {rows.map((row) => (
-          <tr key={row.id}>
+        {rows.map((row, index) => (
+          <tr key={index}>
             {columns.map((column) => (
               <td key={column.id}>
                 {

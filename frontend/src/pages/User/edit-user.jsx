@@ -8,14 +8,14 @@ export default function edit({ history, match: { params: { id } } }) {
   const isNewUser = id === 'new';
 
   const [form, setForm] = useState({
-    user: '',
+    name: '',
     email: '',
     password: '',
   });
 
   const fetchUser = async () => {
     const response = await api.get(`/user/${id}`);
-    setForm(response.data);
+    setForm(response.data.user);
   };
 
   useEffect(() => {
@@ -56,11 +56,11 @@ export default function edit({ history, match: { params: { id } } }) {
       <Card title={isNewUser ? 'Create User' : 'Update User'}>
         <Form onSubmit={onSubmit}>
           <Form.Group>
-            <Form.Label>User</Form.Label>
+            <Form.Label>Name</Form.Label>
             <Form.Control
-              name="user"
+              name="name"
               type="text"
-              value={form.user}
+              value={form.name}
               onChange={onChange}
             />
           </Form.Group>

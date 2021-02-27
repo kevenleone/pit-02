@@ -16,7 +16,7 @@ export default function index({
     setLoading(true);
     try {
       const response = await axios.get(endpoint);
-      setRows(response.data);
+      setRows(response.data.data);
       setLoading(false);
     } catch (e) {
       toast.error('Falha na requisição...');

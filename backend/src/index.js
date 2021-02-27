@@ -1,18 +1,23 @@
-// const bodyParser = require('body-parser')
-// const cors = require('cors');
+const bodyParser = require('body-parser')
+const cors = require('cors');
 const express = require("express");
 const morgan = require('morgan');
 const mongoose = require("mongoose");
 
+require('dotenv').config()
+
+const {HTTP_PORT, MONGO_URL} = process.env;
+
 const UserRouter = require("./routes/user.router");
 
-mongoose.connect("mongodb://localhost:27017/pitang02", {
+mongoose.connect(MONGO_URL, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
 
 const app = express();
-
+app.use(cors());
+app.use(bodyParser.json())
 app.use(morgan('dev'))
 
 app.get("/", (request, response) => {
@@ -21,6 +26,6 @@ app.get("/", (request, response) => {
 
 app.use("/api", UserRouter);
 
-app.listen(3333, () => {
-  console.log("Rodando na porta 3333");
+app.listen(HTTP_PORT, () => {
+  console.log(`Rodando na porta ${HTTP_PORT}`);
 });

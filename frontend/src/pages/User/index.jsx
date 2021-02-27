@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import React, { useState } from 'react';
 import { Button } from 'react-bootstrap';
 import { toast } from 'react-toastify';
@@ -9,7 +10,7 @@ const User = ({ history }) => {
 
   const onRemoveUser = async (user) => {
     try {
-      await api.delete(`/user/${user.id}`);
+      await api.delete(`/user/${user._id}`);
       toast.info('Usuário removido');
       setRefetchCount(refetchCount + 1);
     } catch (e) {
@@ -19,11 +20,7 @@ const User = ({ history }) => {
 
   const columns = [
     {
-      id: 'id',
-      value: 'ID',
-    },
-    {
-      id: 'user',
+      id: 'name',
       value: 'User',
     },
     {
@@ -39,7 +36,7 @@ const User = ({ history }) => {
       value: 'Action',
       render: (_, user) => (
         <>
-          <Button onClick={() => history.push(`/user/${user.id}`)}>
+          <Button onClick={() => history.push(`/user/${user._id}`)}>
             Editar
           </Button>
           <Button
