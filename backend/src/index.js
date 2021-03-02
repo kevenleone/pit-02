@@ -4,6 +4,8 @@ const express = require("express");
 const morgan = require('morgan');
 const mongoose = require("mongoose");
 
+const authMiddleware = require('./middlewares/auth.middleware');
+
 require('dotenv').config()
 
 const {HTTP_PORT, MONGO_URL} = process.env;
@@ -16,6 +18,8 @@ mongoose.connect(MONGO_URL, {
 });
 
 const app = express();
+
+app.use(authMiddleware)
 app.use(cors());
 app.use(bodyParser.json())
 app.use(morgan('dev'))

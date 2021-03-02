@@ -1,5 +1,5 @@
 const UserModel = require("../models/user.model");
-const jwt = require('jsonwebtoken');
+const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 
 const saltRounds = 10;
@@ -21,7 +21,7 @@ class UserController {
         throw new Error("Senha inválida");
       }
 
-      delete user.password
+      delete user.password;
 
       const token = jwt.sign(user, process.env.JWT_SECRET_KEY);
 
@@ -48,9 +48,15 @@ class UserController {
       data.password = hash;
     }
 
-    const user = await UserModel.create(data);
+    const user = await UserModel.findOne({ email: data.email });
 
-    res.send({ user });
+    if (user) {
+      return res.status(400).send({ message: "Email already exists" });
+    }
+
+    const newUser = await UserModel.create(data);
+
+    res.send({ user: newUser });
   }
 
   async getOne(req, res) {
@@ -100,6 +106,10 @@ class UserController {
     } catch (error) {
       res.status(400).send({ message: error.message });
     }
+  }
+
+  async me(req, res) {
+    res.send({ loggedUser: req.headers.loggedUser });
   }
 }
 
