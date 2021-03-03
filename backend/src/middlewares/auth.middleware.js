@@ -1,22 +1,31 @@
-const {verify} = require('jsonwebtoken')
+const { verify } = require("jsonwebtoken");
+
+const publicRoutes = ["/api/auth", "/"];
 
 const authMiddleware = (req, res, next) => {
-    const {authorization} = req.headers;
+  const { authorization } = req.headers;
 
-    try {
-        if (!authorization) {
-            throw new Error('Authorization not exists');
-        }
+  if (
+    publicRoutes.includes(req.url) ||
+    (req.url === "/api/user" && req.method === "POST")
+  ) {
+    return next();
+  }
 
-        const [_, token] = authorization.split(' ');
-        const payload = verify(token, process.env.JWT_SECRET_KEY);
-
-        req.headers.loggedUser = payload;
-
-        next();
-    } catch (error) {
-        res.status(401).send({message: error.message});
+  try {
+    if (!authorization) {
+      throw new Error("Authorization not exists");
     }
+
+    const [_, token] = authorization.split(" ");
+    const payload = verify(token, process.env.JWT_SECRET_KEY);
+
+    req.headers.loggedUser = payload;
+
+    next();
+  } catch (error) {
+    res.status(401).send({ message: error.message });
+  }
 };
 
 module.exports = authMiddleware;

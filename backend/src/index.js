@@ -4,13 +4,12 @@ const express = require("express");
 const morgan = require('morgan');
 const mongoose = require("mongoose");
 
+const Routes = require("./routes/routes");
 const authMiddleware = require('./middlewares/auth.middleware');
 
 require('dotenv').config()
 
 const {HTTP_PORT, MONGO_URL} = process.env;
-
-const UserRouter = require("./routes/user.router");
 
 mongoose.connect(MONGO_URL, {
   useNewUrlParser: true,
@@ -28,7 +27,7 @@ app.get("/", (request, response) => {
   response.json({ message: "Hello World" });
 });
 
-app.use("/api", UserRouter);
+app.use("/api", Routes);
 
 app.listen(HTTP_PORT, () => {
   console.log(`Rodando na porta ${HTTP_PORT}`);
