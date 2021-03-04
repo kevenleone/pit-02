@@ -9,7 +9,7 @@ const TodosContextProvider = ({ children }) => {
   const fetchTodos = async () => {
     try {
       const response = await axios.get('/todo');
-      setTodos(response.data);
+      setTodos(response.data.data);
     } catch (e) {
       toast.error(e.message);
     }

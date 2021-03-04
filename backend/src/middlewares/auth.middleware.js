@@ -1,4 +1,4 @@
-const { verify } = require("jsonwebtoken");
+const jwt = require("jsonwebtoken");
 
 const publicRoutes = ["/api/auth", "/"];
 
@@ -18,7 +18,7 @@ const authMiddleware = (req, res, next) => {
     }
 
     const [_, token] = authorization.split(" ");
-    const payload = verify(token, process.env.JWT_SECRET_KEY);
+    const payload = jwt.verify(token, process.env.JWT_SECRET_KEY);
 
     req.headers.loggedUser = payload;
 

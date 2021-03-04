@@ -7,7 +7,7 @@ class TodoController {
         loggedUser: { _id: userId },
       },
     } = req;
-
+    
     const data = await TodoModel.find({ userId });
 
     res.send({ data });
