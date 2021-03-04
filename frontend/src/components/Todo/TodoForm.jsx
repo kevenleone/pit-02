@@ -22,7 +22,7 @@ export default function TodoForm() {
     try {
       const response = await axios.post('/todo', data);
       toast(`Todo [${text}], created !`);
-      setTodos([...todos, response.data]);
+      setTodos([...todos, response.data.data]);
       setText('');
     } catch (e) {
       toast.error(e.message);

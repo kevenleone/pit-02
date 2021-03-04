@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import React, { useContext } from 'react';
 import {
   Row, Button, Table,
@@ -12,7 +13,7 @@ const TodoList = () => {
 
   const onCompleteTodo = async ({ target: { checked } }, todo) => {
     const newTodos = todos.map((_todo) => {
-      if (_todo.id === todo.id) {
+      if (_todo._id === todo._id) {
         return {
           ..._todo,
           completed: checked,
@@ -21,8 +22,8 @@ const TodoList = () => {
       return _todo;
     });
 
-    await axios.put(`/todo/${todo.id}`, {
-      ...todo,
+    await axios.put(`/todo/${todo._id}`, {
+      title: todo.title,
       completed: checked,
     });
 
@@ -30,9 +31,9 @@ const TodoList = () => {
   };
 
   const onRemoveTodo = async (todo) => {
-    const newTodos = todos.filter(({ id }) => id !== todo.id);
+    const newTodos = todos.filter(({ id }) => id !== todo._id);
 
-    await axios.delete(`/todo/${todo.id}`);
+    await axios.delete(`/todo/${todo._id}`);
 
     toast.info(`Todo [${todo.title}] removed`);
 
@@ -41,7 +42,7 @@ const TodoList = () => {
 
   const onEditTodo = (todo) => {
     const newTodos = todos.map((_todo) => {
-      if (_todo.id === todo.id) {
+      if (_todo._id === todo._id) {
         return {
           ..._todo,
           edit: !_todo.edit,
@@ -71,8 +72,8 @@ const TodoList = () => {
 
   const onBlurField = async (todo) => {
     if (todo.title.trim()) {
-      await axios.put(`/todo/${todo.id}`, {
-        ...todo,
+      await axios.put(`/todo/${todo._id}`, {
+        title: todo.title,
         edit: false,
       });
 
@@ -94,7 +95,7 @@ const TodoList = () => {
         </thead>
         <tbody>
           {todos.length ? todos.map((todo, index) => (
-            <tr key={todo.id}>
+            <tr key={todo._id}>
               <td>
                 <input
                   onChange={(event) => onCompleteTodo(event, todo)}
@@ -112,7 +113,7 @@ const TodoList = () => {
                     onChange={(event) => onChangeTodo(event, index)}
                   />
                 ) : (
-                  <Link to={`/todo/${todo.id}`} className={todo.completed ? 'completed' : ''}>
+                  <Link to={`/todo/${todo._id}`} className={todo.completed ? 'completed' : ''}>
                     {todo.title}
                   </Link>
                 )}
