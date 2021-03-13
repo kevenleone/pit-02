@@ -1,10 +1,18 @@
 const mongoose = require("mongoose");
 
+const {CarSchema} = require('./cars.model');
+
 const UserSchema = mongoose.Schema(
   {
-    name: String,
+    firstName: String,
+    lastName: String,
+    email: String,
+    birthday: Date,
+    login: String,
+    phone: String,
     password: String,
     email: String,
+    cars: [CarSchema]
   },
   { timestamps: true }
 );

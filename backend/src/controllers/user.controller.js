@@ -1,24 +1,37 @@
 const UserModel = require("../models/user.model");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
+const Joi = require("joi");
+
+const schema = Joi.object({
+  login: Joi.string().alphanum().min(3).max(30).required(),
+  firstName: Joi.string().min(3).max(30).required(),
+  lastName: Joi.string().min(3).max(30).required(),
+  phone: Joi.number().required(),
+  password: Joi.string().pattern(new RegExp("^[a-zA-Z0-9]{3,30}$")),
+  birthday: Joi.date().greater("1-1-1900"),
+  email: Joi.string()
+    .email({ minDomainSegments: 2, tlds: { allow: ["com", "net"] } })
+    .required(),
+});
 
 const saltRounds = 10;
 
 class UserController {
   async auth(req, res) {
-    const body = req.body;
+    const { login, password } = req.body;
 
     try {
-      const user = await UserModel.findOne({ email: body.email }).lean();
+      const user = await UserModel.findOne({ login }).lean();
 
       if (!user) {
-        throw new Error("Usuário não existe");
+        throw new Error("User not exists");
       }
 
       const compareResult = await bcrypt.compare(body.password, user.password);
 
       if (!compareResult) {
-        throw new Error("Senha inválida");
+        throw new Error("Invalid Password");
       }
 
       delete user.password;
@@ -27,7 +40,8 @@ class UserController {
 
       res.send({ token });
     } catch (error) {
-      res.status(400).send({ message: error.message });
+      console.error(error.message);
+      res.status(400).send({ message: "Invalid login or password" });
     }
   }
 
@@ -38,23 +52,45 @@ class UserController {
   }
 
   async store(req, res) {
-    const data = req.body;
+    const validation = schema.validate(req.body);
 
-    if (data.password) {
-      const password = data.password;
+    let { login, password, email } = req.body;
+
+    if (validation.error) {
+      res
+        .status(400)
+        .send({ message: "Invalid Fields", error: validation.error.message });
+    }
+
+    if (password) {
       const salt = bcrypt.genSaltSync(saltRounds);
       const hash = bcrypt.hashSync(password, salt);
 
-      data.password = hash;
+      password = hash;
     }
 
-    const user = await UserModel.findOne({ email: data.email });
+    const user = await UserModel.findOne({
+      $or: [
+        {
+          login,
+        },
+        {
+          email,
+        },
+      ],
+    });
 
     if (user) {
-      return res.status(400).send({ message: "Email already exists" });
+      if (user.email === email) {
+        return res.status(400).send({ message: "Email already exists" });
+      }
+
+      if (user.login === login) {
+        return res.status(400).send({ message: "Login already exists" });
+      }
     }
 
-    const newUser = await UserModel.create(data);
+    const newUser = await UserModel.create(req.body);
 
     res.send({ user: newUser });
   }
