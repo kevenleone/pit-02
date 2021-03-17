@@ -1,19 +1,16 @@
-const UserModel = require("../models/user.model");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
-const Joi = require("joi");
 
-const schema = Joi.object({
-  login: Joi.string().alphanum().min(3).max(30).required(),
-  firstName: Joi.string().min(3).max(30).required(),
-  lastName: Joi.string().min(3).max(30).required(),
-  phone: Joi.number().required(),
-  password: Joi.string().pattern(new RegExp("^[a-zA-Z0-9]{3,30}$")),
-  birthday: Joi.date().greater("1-1-1900"),
-  email: Joi.string()
-    .email({ minDomainSegments: 2, tlds: { allow: ["com", "net"] } })
-    .required(),
-});
+const {userSchema} = require('../utils/joi.schemas');
+const UserModel = require("../models/user.model");
+
+const validateForm = (data) => {
+  const validation = userSchema.validate(data);
+
+  if (validation.error) {
+    throw new Error(validation.error);
+  }
+};
 
 const saltRounds = 10;
 
@@ -22,13 +19,13 @@ class UserController {
     const { login, password } = req.body;
 
     try {
-      const user = await UserModel.findOne({ login }).lean();
+      const user = await UserModel.findOne({ login });
 
       if (!user) {
         throw new Error("User not exists");
       }
 
-      const compareResult = await bcrypt.compare(body.password, user.password);
+      const compareResult = await bcrypt.compare(password, user.password);
 
       if (!compareResult) {
         throw new Error("Invalid Password");
@@ -36,7 +33,11 @@ class UserController {
 
       delete user.password;
 
-      const token = jwt.sign(user, process.env.JWT_SECRET_KEY);
+      user.lastLogin = new Date();
+
+      await user.save();
+
+      const token = jwt.sign({ ...user._doc }, process.env.JWT_SECRET_KEY);
 
       res.send({ token });
     } catch (error) {
@@ -52,47 +53,45 @@ class UserController {
   }
 
   async store(req, res) {
-    const validation = schema.validate(req.body);
+    try {
+      validateForm(req.body);
 
-    let { login, password, email } = req.body;
+      const { login, password, email } = req.body;
 
-    if (validation.error) {
-      res
-        .status(400)
-        .send({ message: "Invalid Fields", error: validation.error.message });
-    }
+      if (password) {
+        const salt = bcrypt.genSaltSync(saltRounds);
+        const hash = bcrypt.hashSync(password, salt);
 
-    if (password) {
-      const salt = bcrypt.genSaltSync(saltRounds);
-      const hash = bcrypt.hashSync(password, salt);
-
-      password = hash;
-    }
-
-    const user = await UserModel.findOne({
-      $or: [
-        {
-          login,
-        },
-        {
-          email,
-        },
-      ],
-    });
-
-    if (user) {
-      if (user.email === email) {
-        return res.status(400).send({ message: "Email already exists" });
+        req.body.password = hash;
       }
 
-      if (user.login === login) {
-        return res.status(400).send({ message: "Login already exists" });
+      const user = await UserModel.findOne({
+        $or: [
+          {
+            login,
+          },
+          {
+            email,
+          },
+        ],
+      });
+
+      if (user) {
+        if (user.email === email) {
+          return res.status(400).send({ message: "Email already exists" });
+        }
+
+        if (user.login === login) {
+          return res.status(400).send({ message: "Login already exists" });
+        }
       }
+
+      const newUser = await UserModel.create(req.body);
+
+      res.send({ user: newUser });
+    } catch (error) {
+      res.status(400).send({ message: "Invalid Fields", error: error.message });
     }
-
-    const newUser = await UserModel.create(req.body);
-
-    res.send({ user: newUser });
   }
 
   async getOne(req, res) {
@@ -112,22 +111,26 @@ class UserController {
       body,
     } = req;
 
-    if (body.password) {
-      const password = body.password;
-      const salt = bcrypt.genSaltSync(saltRounds);
-      const hash = bcrypt.hashSync(password, salt);
+    try {
+      validateForm(req.body);
 
-      body.password = hash;
-    }
+      if (body.password) {
+        const password = body.password;
+        const salt = bcrypt.genSaltSync(saltRounds);
+        const hash = bcrypt.hashSync(password, salt);
 
-    const user = await UserModel.findOneAndUpdate(id, body).lean();
+        body.password = hash;
+      }
 
-    res.send({
-      user: {
-        ...user,
-        ...body,
-      },
-    });
+      const user = await UserModel.findOneAndUpdate(id, body).lean();
+
+      res.send({
+        user: {
+          ...user,
+          ...body,
+        },
+      });
+    } catch (error) {}
   }
 
   async remove(req, res) {

@@ -12,6 +12,7 @@ const UserSchema = mongoose.Schema(
     phone: String,
     password: String,
     email: String,
+    lastLogin: Date,
     cars: [CarSchema]
   },
   { timestamps: true }

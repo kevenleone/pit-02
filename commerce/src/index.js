@@ -1,14 +1,20 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
-import '@clayui/css/lib/css/atlas.css';
+import React from "react";
+import ReactDOM from "react-dom";
+import App from "./App";
+import reportWebVitals from "./reportWebVitals";
+import "@clayui/css/lib/css/atlas.css";
+import { ClayIconSpriteContext } from "@clayui/icon";
+
+const spritemap =
+  "https://cdn.jsdelivr.net/npm/@clayui/css/lib/images/icons/icons.svg";
 
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
+  <ClayIconSpriteContext.Provider value={spritemap}>
+    <React.StrictMode>
+      <App />
+    </React.StrictMode>
+  </ClayIconSpriteContext.Provider>,
+  document.getElementById("root")
 );
 
 // If you want to start measuring performance in your app, pass a function

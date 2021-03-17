@@ -1,9 +1,10 @@
 import React from 'react'
+import Page from '../../components/page'
 
 export default function index() {
     return (
-        <div>
+        <Page>
             Home
-        </div>
+        </Page>
     )
 }

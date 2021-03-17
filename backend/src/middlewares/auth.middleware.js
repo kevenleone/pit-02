@@ -1,14 +1,11 @@
 const jwt = require("jsonwebtoken");
 
-const publicRoutes = ["/api/auth", "/"];
+const publicRoutes = ["/api/user", "/api/signin"];
 
 const authMiddleware = (req, res, next) => {
   const { authorization } = req.headers;
 
-  if (
-    publicRoutes.includes(req.url) ||
-    (req.url === "/api/user" && req.method === "POST")
-  ) {
+  if (publicRoutes.includes(req.url)) {
     return next();
   }
 
