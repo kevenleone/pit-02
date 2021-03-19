@@ -1,21 +1,46 @@
 import ClayNavigationBar from "@clayui/navigation-bar";
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
+import NavigationOptions from "../navigation-options";
 
-const NavigationBar = ({ history }) => {
+const routes = [
+  {
+    name: "Product",
+    path: "/product",
+  },
+  {
+    name: "Wish List",
+    path: "/wishlist",
+  },
+  {
+    name: "Cart",
+    path: "/cart",
+  },
+];
+
+const NavigationBar = () => {
+  const location = useLocation();
+
   return (
-    <ClayNavigationBar triggerLabel="Item 1">
-      <ClayNavigationBar.Item active>
-        <Link to="/search" className="nav-link">All</Link>
-      </ClayNavigationBar.Item>
+    <ClayNavigationBar
+      triggerLabel="Item 1"
+      className="NavigationBar"
+      style={{ margin: "auto", width: "100%" }}
+    >
+      <>
+        {routes.map(({ path, name }) => (
+          <ClayNavigationBar.Item
+            key={path}
+            active={location.pathname === path}
+          >
+            <Link to={path} className="nav-link">
+              {name}
+            </Link>
+          </ClayNavigationBar.Item>
+        ))}
+      </>
       <ClayNavigationBar.Item>
-        <Link to="/search?q=clothes" className="nav-link">Clothes</Link>
-      </ClayNavigationBar.Item>
-      <ClayNavigationBar.Item>
-        <Link to="/search?q=acessories" className="nav-link">Acessories</Link>
-      </ClayNavigationBar.Item>
-      <ClayNavigationBar.Item>
-        <Link to="/search?q=shoes" className="nav-link">Shoes</Link>
+        <NavigationOptions />
       </ClayNavigationBar.Item>
     </ClayNavigationBar>
   );

@@ -4,9 +4,8 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import "@clayui/css/lib/css/atlas.css";
 import { ClayIconSpriteContext } from "@clayui/icon";
-
-const spritemap =
-  "https://cdn.jsdelivr.net/npm/@clayui/css/lib/images/icons/icons.svg";
+import spritemap from './icons.svg';
+import './styles/global.scss';
 
 ReactDOM.render(
   <ClayIconSpriteContext.Provider value={spritemap}>
