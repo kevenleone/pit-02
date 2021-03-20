@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const {CarSchema} = require('./cars.model');
+const { ProductSchema } = require("./product.model");
 
 const UserSchema = mongoose.Schema(
   {
@@ -11,9 +11,20 @@ const UserSchema = mongoose.Schema(
     login: String,
     phone: String,
     password: String,
-    email: String,
     lastLogin: Date,
-    cars: [CarSchema]
+    wishlist: [
+      {
+        productId: mongoose.ObjectId,
+      },
+    ],
+    cart: [
+      {
+        productId: mongoose.ObjectId,
+        size: String,
+        quantity: Number,
+      },
+    ],
+    purchasedProducts: [ProductSchema],
   },
   { timestamps: true }
 );

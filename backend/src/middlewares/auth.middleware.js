@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
 
-const publicRoutes = ["/api/user", "/api/signin"];
+const publicRoutes = ["/api/user", "/api/signin", "/api/product"];
 
 const authMiddleware = (req, res, next) => {
   const { authorization } = req.headers;
