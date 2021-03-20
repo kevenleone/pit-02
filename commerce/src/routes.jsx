@@ -14,7 +14,7 @@ const Routes = () => (
     <NavigationBar />
     <Switch>
       <Route exact path="/" component={Home} />
-      <Route exact path="/sign" component={Auth} />
+      <Route exact path="/auth" component={Auth} />
       <Route exact path="/cart" component={Cart} />
       <Route exact path="/search" component={Search} />
       <Route exact path="/product" component={Products} />

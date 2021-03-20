@@ -1,6 +1,7 @@
 import React from "react";
 import ClayCard from "@clayui/card";
 import { ClayButtonWithIcon } from "@clayui/button";
+import HTML from "../html";
 
 export default function index({
   onClickFavorite = () => {},
@@ -12,10 +13,8 @@ export default function index({
   image,
 }) {
   return (
-    <div onClick={onClickCard}>
-      <ClayCard>
+    <ClayCard className="product">
       <ClayButtonWithIcon
-      color="red"
         onClick={onClickFavorite}
         className="ml-2 mt-2"
         symbol={favoriteIcon}
@@ -28,12 +27,12 @@ export default function index({
       <ClayCard.Body>
         <ClayCard.Row>
           <div className="autofit-col autofit-col-expand">
-            <section className="autofit-section">
-              <ClayCard.Description displayType="title">
+            <section className="">
+              <ClayCard.Description className="product__title" displayType="title" onClick={onClickCard}>
                 {title}
               </ClayCard.Description>
-              <ClayCard.Description displayType="text">
-                {description}
+              <ClayCard.Description displayType="subtitle">
+                <HTML html={`${description.substring(0, 50)}...`} />
               </ClayCard.Description>
               <ClayCard.Description displayType="subtitle">
                 {price}
@@ -43,6 +42,5 @@ export default function index({
         </ClayCard.Row>
       </ClayCard.Body>
     </ClayCard>
-    </div>
   );
 }

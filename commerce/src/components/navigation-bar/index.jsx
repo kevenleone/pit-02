@@ -1,7 +1,9 @@
 import ClayNavigationBar from "@clayui/navigation-bar";
+import ClayButton from "@clayui/button";
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import NavigationOptions from "../navigation-options";
+
 
 const routes = [
   {
@@ -27,6 +29,13 @@ const NavigationBar = () => {
       className="NavigationBar"
       style={{ margin: "auto", width: "100%" }}
     >
+
+      <ClayNavigationBar.Item>
+        <ClayButton displayType="link">
+          Shopping App
+        </ClayButton>
+      </ClayNavigationBar.Item>
+
       <>
         {routes.map(({ path, name }) => (
           <ClayNavigationBar.Item
