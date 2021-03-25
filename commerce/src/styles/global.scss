@@ -13,7 +13,7 @@
     }
 }
 
-.colors {
+.colors-component {
     display: flex;
 
     &__btn-color {
@@ -34,12 +34,24 @@
         }
     }
 
+    &__btn-color.active {
+        border: 2px solid black;
+    }
+
+    &__btn-color.active:hover {
+        border: 2px solid black;
+    }
+
+    &__btn-color:hover {
+        border: 1px solid black;
+    }
+
     &__btn-color:hover {
         border: 1px solid black;
     }
 }
 
-.sizes {
+.sizes-component {
     display: flex;
 
     &__btn-color {
@@ -65,4 +77,8 @@
     &__btn-color:hover {
         border: 1px solid black;
     }
+}
+
+.color-white {
+    color: white;
 }

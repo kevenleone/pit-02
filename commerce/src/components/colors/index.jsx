@@ -1,4 +1,5 @@
 import React from "react";
+import classNames from "classnames";
 import ClayButton, { ClayButtonWithIcon } from "@clayui/button";
 
 const Colors = ({ selectedColor, setSelectedColor, colors }) => {
@@ -9,21 +10,25 @@ const Colors = ({ selectedColor, setSelectedColor, colors }) => {
   return (
     <>
       <h3>Colors</h3>
-      <div className="colors">
+      <div className="colors-component">
         {colors.values.map((value) => {
           const color = value.hexColors[0];
 
           return (
             <ClayButton
               key={value.label}
-              className="colors__btn-color"
+              className={classNames("colors-component__btn-color", {
+                active: value.label === selectedColor,
+              })}
               displayType="unstyled"
               onClick={() => setSelectedColor(value.label)}
               style={{ backgroundColor: color }}
             >
               {selectedColor === value.label && (
                 <ClayButtonWithIcon
-                  className="colors__btn-color__check"
+                  className={classNames("colors-component__btn-color__check", {
+                    "color-white": color === "#000000",
+                  })}
                   displayType="unstyled"
                   symbol="check"
                 />

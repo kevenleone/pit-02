@@ -3,23 +3,31 @@ import ClayLayout from "@clayui/layout";
 
 import Product from "./Product";
 import AppContext, { Types } from "../../AppContext";
+import axios from "../../utils/axios";
+
 import { useHistory } from "react-router";
 
 export default function ProductList({ products = [] }) {
   const [{ wishlist }, dispatch] = useContext(AppContext);
   const history = useHistory();
 
-  const onClickFavorite = (product) => {
-    dispatch({ type: Types.TOGGLE_WISHLIST, payload: product.id });
+  const onClickFavorite = async (product) => {
+    await axios.post("/wishlist", {
+      productId: product._id,
+    });
+
+    dispatch({ type: Types.TOGGLE_WISHLIST, payload: product });
   };
 
   return (
     <ClayLayout.Row className="mt-4">
       {products.map((product) => (
-        <ClayLayout.Col key={product.id} size={4}>
+        <ClayLayout.Col key={product._id} size={4}>
           <Product
             favoriteIcon={
-              wishlist.includes(product.id) ? "heart-full" : "heart"
+              wishlist.find((wish) => wish._id === product._id)
+                ? "heart-full"
+                : "heart"
             }
             onClickCard={() => history.push(`/product/${product.slug}`)}
             onClickFavorite={() => onClickFavorite(product)}

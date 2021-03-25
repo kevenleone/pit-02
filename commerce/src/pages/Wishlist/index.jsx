@@ -4,15 +4,11 @@ import Page from "../../components/page";
 import ProductList from "../../components/Product/ProductList";
 
 const WishList = () => {
-  const [{ wishlist, products }] = useContext(AppContext);
-
-  const productInWishList = products.filter((product) =>
-    wishlist.includes(product.id)
-  );
+  const [{wishlist}] = useContext(AppContext);
 
   return (
     <Page title="Wishlist">
-      <ProductList products={productInWishList}></ProductList>
+      <ProductList products={wishlist} />
     </Page>
   );
 };

@@ -1,33 +1,36 @@
 import React, { useContext, useState } from "react";
 import ClayLayout from "@clayui/layout";
 
+import { useModal } from "@clayui/modal";
 import ClayButton, { ClayButtonWithIcon } from "@clayui/button";
 import AppContext, { Types } from "../../AppContext";
 import HTML from "../html";
 import Colors from "../colors";
 import Sizes from "../sizes";
+import axios from "../../utils/axios";
+import Modal from "../modal";
 
-export default function ProductDetail({
-  id,
-  name,
-  images = [],
-  description,
-  price,
-  options,
-}) {
+export default function ProductDetail({ product }) {
+  const [{ wishlist }, dispatch] = useContext(AppContext);
   const [imageIndex, setImageIndex] = useState(0);
   const [selectedColor, setSelectedColor] = useState("");
   const [selectedSize, setSelectedSize] = useState("");
-
-  const [{ wishlist }, dispatch] = useContext(AppContext);
-
-  const productInWishList = wishlist.includes(id);
-
+  const productInWishList = wishlist.find((wish) => wish._id === product._id);
+  const { name, images = [], description, price, options } = product;
   const optionColors = options.find((option) => option.displayName === "Color");
   const optionSize = options.find((option) => option.displayName === "Size");
 
-  const onClickFavorite = () => {
-    dispatch({ type: Types.TOGGLE_WISHLIST, payload: id });
+  const [visible, setVisible] = useState(false);
+  const { observer, onClose } = useModal({
+    onClose: () => setVisible(false),
+  });
+
+  const onClickFavorite = async () => {
+    await axios.post("/wishlist", {
+      productId: product._id,
+    });
+
+    dispatch({ type: Types.TOGGLE_WISHLIST, payload: product });
   };
 
   const onClickPrev = () => {
@@ -93,8 +96,14 @@ export default function ProductDetail({
         />
 
         <HTML html={description} className="mt-4" />
-        <ClayButton>Add to Cart</ClayButton>
+        <ClayButton onClick={() => setVisible(true)}>Add to Cart</ClayButton>
       </ClayLayout.Col>
+      <Modal
+        observer={observer}
+        visible={visible}
+        onClose={onClose}
+        title={product.name}
+      />
     </ClayLayout.Row>
   );
 }

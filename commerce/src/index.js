@@ -1,15 +1,18 @@
 import React from "react";
+import { ClayIconSpriteContext } from "@clayui/icon";
 import ReactDOM from "react-dom";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
-import "@clayui/css/lib/css/atlas.css";
-import { ClayIconSpriteContext } from "@clayui/icon";
+import {ToastContainer} from 'react-toastify'
 import spritemap from './icons.svg';
+import "@clayui/css/lib/css/atlas.css";
+import 'react-toastify/dist/ReactToastify.css';
 import './styles/global.scss';
 
 ReactDOM.render(
   <ClayIconSpriteContext.Provider value={spritemap}>
     <React.StrictMode>
+      <ToastContainer />
       <App />
     </React.StrictMode>
   </ClayIconSpriteContext.Provider>,

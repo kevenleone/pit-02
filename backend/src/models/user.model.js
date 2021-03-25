@@ -21,6 +21,7 @@ const UserSchema = mongoose.Schema(
       {
         productId: mongoose.ObjectId,
         size: String,
+        color: String,
         quantity: Number,
       },
     ],

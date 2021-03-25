@@ -11,12 +11,13 @@ const initialState = {
 };
 
 const Types = {
-  SET_LOGGED_USER: 'SET_LOGGED_USER',
-  SET_PRODUCTS: 'SET_PRODUCTS',
-  SET_CART: 'SET_CART',
-  SET_SEARCH: 'SET_SEARCH',
-  TOGGLE_WISHLIST: 'TOGGLE_WISHLIST',
-}
+  SET_LOGGED_USER: "SET_LOGGED_USER",
+  SET_PRODUCTS: "SET_PRODUCTS",
+  SET_CART: "SET_CART",
+  SET_WISHLIST: "SET_WISHLIST",
+  SET_SEARCH: "SET_SEARCH",
+  TOGGLE_WISHLIST: "TOGGLE_WISHLIST",
+};
 
 const AppReducer = (state, action) => {
   switch (action.type) {
@@ -48,15 +49,24 @@ const AppReducer = (state, action) => {
       };
     }
 
+    case Types.SET_WISHLIST: {
+      return {
+        ...state,
+        wishlist: action.payload,
+      };
+    }
+
     case Types.TOGGLE_WISHLIST: {
-      const productId = action.payload;
-      const alreadyOnWishList = state.wishlist.includes(productId);
+      const product = action.payload;
+      const alreadyOnWishList = state.wishlist.find(
+        (wish) => wish._id === product._id
+      );
       let wishlist = [...state.wishlist];
 
       if (alreadyOnWishList) {
-        wishlist = wishlist.filter((wish) => wish !== productId);
+        wishlist = wishlist.filter((wish) => wish._id !== product._id);
       } else {
-        wishlist = [...wishlist, productId];
+        wishlist = [...wishlist, product];
       }
 
       return {

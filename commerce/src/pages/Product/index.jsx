@@ -21,7 +21,7 @@ const Product = ({
 
   return (
     <Page>
-      <ProductDetail {...product} />
+      <ProductDetail product={product} />
     </Page>
   );
 };
