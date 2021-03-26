@@ -20,18 +20,17 @@ const userSchema = Joi.object({
     .required(),
 });
 
-const carSchema = Joi.object({
-  year: Joi.number()
-    .required()
-    .positive()
-    .max(new Date().getFullYear() + 1),
-  licensePlate: Joi.string().required().max(8),
-  model: Joi.string().required(),
-  color: Joi.string().required(),
+const cartSchema = Joi.object({
+  productId: Joi.string()
+    .pattern(new RegExp(/^[0-9a-fA-F]{24}$/))
+    .required(),
+  size: Joi.string().max(3).allow(null, ""),
+  color: Joi.string().allow(null, ""),
+  quantity: Joi.number().required().positive(),
 });
 
 module.exports = {
+  cartSchema,
   userSchema,
-  carSchema,
   validateForm,
 };

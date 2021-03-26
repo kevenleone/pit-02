@@ -1,16 +1,10 @@
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 
-const {userSchema} = require('../utils/joi.schemas');
+const { userSchema, validateForm } = require("../utils/joi.schemas");
 const UserModel = require("../models/user.model");
 
-const validateForm = (data) => {
-  const validation = userSchema.validate(data);
-
-  if (validation.error) {
-    throw new Error(validation.error);
-  }
-};
+const userValidateForm = validateForm(userSchema);
 
 const saltRounds = 10;
 
@@ -54,7 +48,7 @@ class UserController {
 
   async store(req, res) {
     try {
-      validateForm(req.body);
+      userValidateForm(req.body);
 
       const { login, password, email } = req.body;
 
@@ -112,7 +106,7 @@ class UserController {
     } = req;
 
     try {
-      validateForm(req.body);
+      userValidateForm(req.body);
 
       if (body.password) {
         const password = body.password;

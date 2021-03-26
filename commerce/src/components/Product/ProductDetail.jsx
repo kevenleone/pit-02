@@ -1,109 +1,71 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import ClayLayout from "@clayui/layout";
+import ClayButton from "@clayui/button";
 
 import { useModal } from "@clayui/modal";
-import ClayButton, { ClayButtonWithIcon } from "@clayui/button";
-import AppContext, { Types } from "../../AppContext";
-import HTML from "../html";
-import Colors from "../colors";
-import Sizes from "../sizes";
-import axios from "../../utils/axios";
-import Modal from "../modal";
 
-export default function ProductDetail({ product }) {
-  const [{ wishlist }, dispatch] = useContext(AppContext);
-  const [imageIndex, setImageIndex] = useState(0);
-  const [selectedColor, setSelectedColor] = useState("");
-  const [selectedSize, setSelectedSize] = useState("");
-  const productInWishList = wishlist.find((wish) => wish._id === product._id);
-  const { name, images = [], description, price, options } = product;
-  const optionColors = options.find((option) => option.displayName === "Color");
-  const optionSize = options.find((option) => option.displayName === "Size");
+import Modal from "../modal";
+import { toast } from "react-toastify";
+import axios from "../../utils/axios";
+import ProductShowCase from "./ProductActions";
+import ProductDescription from "./ProductDescription";
+import { useHistory } from "react-router";
+import ProductCartInfo from "./ProductCartInfo";
+
+const ProductDetail = ({ product }) => {
+  const [productState, setProductState] = useState({
+    productId: product._id,
+    size: "",
+    color: "",
+    quantity: 1,
+  });
+
+  const history = useHistory();
 
   const [visible, setVisible] = useState(false);
   const { observer, onClose } = useModal({
     onClose: () => setVisible(false),
   });
 
-  const onClickFavorite = async () => {
-    await axios.post("/wishlist", {
-      productId: product._id,
-    });
-
-    dispatch({ type: Types.TOGGLE_WISHLIST, payload: product });
-  };
-
-  const onClickPrev = () => {
-    if (imageIndex !== 0) {
-      setImageIndex(imageIndex - 1);
-    }
-  };
-
-  const onClickNext = () => {
-    if (imageIndex + 1 < images.length) {
-      setImageIndex(imageIndex + 1);
+  const onSubmit = async () => {
+    try {
+      await axios.post("/cart", productState);
+      toast.info("Item added in cart with success");
+      history.push("/cart");
+    } catch (error) {
+      toast.error(error.response.data.message);
     }
   };
 
   return (
     <ClayLayout.Row className="product-detail">
       <ClayLayout.Col>
-        <h1>{name}</h1>
-        <h3>
-          ${price.value} {price.currencyCode}
-        </h3>
-        <div className="product-detail__actions">
-          <img
-            alt={`product name: ${name}`}
-            draggable={false}
-            width="500"
-            height="500"
-            src={images[imageIndex].url}
-          />
-          <ClayButtonWithIcon
-            disabled={imageIndex === 0}
-            displayType="unstyled"
-            symbol="angle-left"
-            onClick={onClickPrev}
-          />
-          <ClayButtonWithIcon
-            disabled={imageIndex + 1 === images.length}
-            displayType="unstyled"
-            className="ml-2"
-            symbol="angle-right"
-            onClick={onClickNext}
-          />
-        </div>
+        <ProductShowCase product={product} />
       </ClayLayout.Col>
       <ClayLayout.Col>
-        <ClayButtonWithIcon
-          className="mb-4"
-          onClick={onClickFavorite}
-          symbol={productInWishList ? "heart-full" : "heart"}
-          displayType="secondary"
+        <ProductDescription
+          product={product}
+          productState={productState}
+          setProductState={setProductState}
         />
-
-        <Colors
-          selectedColor={selectedColor}
-          setSelectedColor={setSelectedColor}
-          colors={optionColors}
-        />
-
-        <Sizes
-          selectedSize={selectedSize}
-          setSelectedSize={setSelectedSize}
-          sizes={optionSize}
-        />
-
-        <HTML html={description} className="mt-4" />
         <ClayButton onClick={() => setVisible(true)}>Add to Cart</ClayButton>
       </ClayLayout.Col>
       <Modal
         observer={observer}
         visible={visible}
         onClose={onClose}
-        title={product.name}
-      />
+        submitText="Proceed to Checkout"
+        title="Product Cart"
+        onSubmit={onSubmit}
+      >
+        <ProductCartInfo
+          product={product}
+          productState={productState}
+          setProductState={setProductState}
+        />
+      </Modal>
     </ClayLayout.Row>
   );
-}
+};
+
+export default ProductDetail;

@@ -22,12 +22,12 @@ export default function index({
       />
 
       <center>
-        <img width="300" height="300" alt="product" src={image} />
+        <img draggable="false" width="300" height="300" alt="product" src={image} />
       </center>
       <ClayCard.Body>
         <ClayCard.Row>
           <div className="autofit-col autofit-col-expand">
-            <section className="">
+            <section>
               <ClayCard.Description className="product__title" displayType="title" onClick={onClickCard}>
                 {title}
               </ClayCard.Description>

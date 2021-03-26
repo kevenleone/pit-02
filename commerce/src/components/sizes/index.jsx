@@ -2,11 +2,10 @@ import React from "react";
 import ClayButton from "@clayui/button";
 import classNames from "classnames";
 
-const Sizes = ({ selectedSize, setSelectedSize, sizes = [] }) => {
+const Sizes = ({ productState, setProductState, sizes = [] }) => {
   if (!sizes?.values.length) {
     return null;
   }
-
 
   return (
     <div className="mt-4">
@@ -17,10 +16,12 @@ const Sizes = ({ selectedSize, setSelectedSize, sizes = [] }) => {
             <ClayButton
               key={value.label}
               className={classNames("sizes-component__btn-color", {
-                active: value.label === selectedSize,
+                active: value.label === productState.size,
               })}
               displayType="unstyled"
-              onClick={() => setSelectedSize(value.label)}
+              onClick={() =>
+                setProductState({ ...productState, size: value.label })
+              }
             >
               {value.label}
             </ClayButton>

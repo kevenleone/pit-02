@@ -2,7 +2,7 @@ import React from "react";
 import classNames from "classnames";
 import ClayButton, { ClayButtonWithIcon } from "@clayui/button";
 
-const Colors = ({ selectedColor, setSelectedColor, colors }) => {
+const Colors = ({ colors, productState, setProductState }) => {
   if (!colors?.values.length) {
     return null;
   }
@@ -18,13 +18,15 @@ const Colors = ({ selectedColor, setSelectedColor, colors }) => {
             <ClayButton
               key={value.label}
               className={classNames("colors-component__btn-color", {
-                active: value.label === selectedColor,
+                active: value.label === productState.color,
               })}
               displayType="unstyled"
-              onClick={() => setSelectedColor(value.label)}
+              onClick={() =>
+                setProductState({ ...productState, color: value.label })
+              }
               style={{ backgroundColor: color }}
             >
-              {selectedColor === value.label && (
+              {productState.color === value.label && (
                 <ClayButtonWithIcon
                   className={classNames("colors-component__btn-color__check", {
                     "color-white": color === "#000000",
