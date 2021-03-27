@@ -1,18 +1,19 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import ClayLayout from "@clayui/layout";
 import ClayButton from "@clayui/button";
-
+import { toast } from "react-toastify";
+import { useHistory } from "react-router";
 import { useModal } from "@clayui/modal";
 
-import Modal from "../modal";
-import { toast } from "react-toastify";
 import axios from "../../utils/axios";
 import ProductShowCase from "./ProductActions";
+import Modal from "../modal";
 import ProductDescription from "./ProductDescription";
-import { useHistory } from "react-router";
 import ProductCartInfo from "./ProductCartInfo";
+import AppContext, { Types } from "../../AppContext";
 
 const ProductDetail = ({ product }) => {
+  const [, dispatch] = useContext(AppContext);
   const [productState, setProductState] = useState({
     productId: product._id,
     size: "",
@@ -29,8 +30,14 @@ const ProductDetail = ({ product }) => {
 
   const onSubmit = async () => {
     try {
-      await axios.post("/cart", productState);
+      const response = await axios.post("/cart", productState);
       toast.info("Item added in cart with success");
+
+      dispatch({
+        type: Types.SET_CART,
+        payload: response.data,
+      });
+
       history.push("/cart");
     } catch (error) {
       toast.error(error.response.data.message);

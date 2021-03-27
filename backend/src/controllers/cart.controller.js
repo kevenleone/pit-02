@@ -21,31 +21,37 @@ const getUserOrFail = async (req, lean) => {
   }
 };
 
+const getCartProducts = async (user) => {
+  const productIds = user.cart.map(({ productId }) => productId);
+
+  const products = await ProductModel.find({
+    _id: {
+      $in: productIds,
+    },
+  }).lean();
+
+  const cartProducts = user.cart.map((cart) => {
+    return {
+      ...cart,
+      product: products.find(
+        (product) => cart.productId.toString() === product._id.toString()
+      ),
+    };
+  });
+
+  return cartProducts;
+};
+
 class CartController {
   async getAllCart(req, res) {
     const user = await getUserOrFail(req, true);
-    
-    const productIds = user.cart.map(({ productId }) => productId);
 
-    const products = await ProductModel.find({
-      _id: {
-        $in: productIds,
-      },
-    }).lean();
-
-    const cartProducts = user.cart.map((cart) => {
-      return {
-        ...cart,
-        product: products.find(
-          (product) => cart.productId.toString() === product._id.toString()
-        ),
-      };
-    });
+    const cartProducts = await getCartProducts(user);
 
     res.send(cartProducts);
   }
 
-  async addProductToCart(req, res) {
+  async saveProductToCart(req, res) {
     const data = req.body;
 
     try {
@@ -75,10 +81,36 @@ class CartController {
 
       await user.save();
 
-      res.send({ user });
+      const userLean = await getUserOrFail(req, true);
+
+      const cartProducts = await getCartProducts(userLean);
+
+      res.send(cartProducts);
     } catch (error) {
       res.status(400).send({ message: error.message });
     }
+  }
+
+  async removeProductCart(req, res) {
+    const { id } = req.params;
+
+    const user = await getUserOrFail(req);
+    const cart = user.cart;
+
+    const isProductInCart = user.cart.find(
+      (cart) => cart.productId.toString() === id
+    );
+
+    if (isProductInCart) {
+      const cartUpdated = cart.filter(
+        (product) => !product.productId.equals(id)
+      );
+      user.cart = cartUpdated;
+      await user.save();
+      return res.send({ message: "Item Cart removed" });
+    }
+
+    res.status(404).send({ message: "Item cart not exists" });
   }
 }
 

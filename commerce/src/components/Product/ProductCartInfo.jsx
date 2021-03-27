@@ -2,7 +2,7 @@ import React from "react";
 import ClayLayout from "@clayui/layout";
 import ClayButton from "@clayui/button";
 
-const InvoiceCategory = ({ title, value, children }) => (
+export const InvoiceCategory = ({ title, value }) => (
   <ClayLayout.Row>
     <ClayLayout.Col>
       <b>{title}</b>

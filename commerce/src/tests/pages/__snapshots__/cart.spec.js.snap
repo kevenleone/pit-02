@@ -1,0 +1,181 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Cart renders cart with many products 1`] = `
+<DocumentFragment>
+  <div
+    class="mt-4 container"
+  >
+    <h1>
+      My Cart
+    </h1>
+    <section>
+      <hr />
+      <div
+        class="mb-2"
+      >
+        <div
+          class="row cart-product-info"
+        >
+          <div
+            class="col"
+          >
+            <img
+              alt="product x"
+              draggable="false"
+              height="100"
+              src="https://cdn11.bigcommerce.com/s-qfzerv205w/images/stencil/original/products/115/489/Hat-front-black__72990.1603748583.png"
+              width="100"
+            />
+          </div>
+          <div
+            class="col"
+          >
+            <h2>
+              Black Hat
+            </h2>
+            <button
+              class="btn btn-secondary"
+              type="button"
+            >
+              Update Cart
+            </button>
+          </div>
+          <div
+            class="col"
+          >
+            <h3
+              class="product-value"
+            >
+              $80.00
+            </h3>
+            <button
+              class="btn btn-monospaced btn-secondary"
+              type="button"
+            >
+              <svg
+                class="lexicon-icon lexicon-icon-trash"
+                role="presentation"
+              >
+                <use
+                  xlink:href="#trash"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
+        <hr />
+      </div>
+      <div
+        class="mb-2"
+      >
+        <div
+          class="row cart-product-info"
+        >
+          <div
+            class="col"
+          >
+            <img
+              alt="product x"
+              draggable="false"
+              height="100"
+              src="https://cdn11.bigcommerce.com/s-qfzerv205w/images/stencil/original/products/126/423/mockup-9c5e3634__60853.1603747807.png"
+              width="100"
+            />
+          </div>
+          <div
+            class="col"
+          >
+            <h2>
+              Unisex Skinny Joggers
+            </h2>
+            <button
+              class="btn btn-secondary"
+              type="button"
+            >
+              Update Cart
+            </button>
+          </div>
+          <div
+            class="col"
+          >
+            <h3
+              class="product-value"
+            >
+              $220.00
+            </h3>
+            <button
+              class="btn btn-monospaced btn-secondary"
+              type="button"
+            >
+              <svg
+                class="lexicon-icon lexicon-icon-trash"
+                role="presentation"
+              >
+                <use
+                  xlink:href="#trash"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
+        <hr />
+      </div>
+      <h3>
+        Order Summary
+      </h3>
+      <div
+        class="row"
+      >
+        <div
+          class="col-8"
+        >
+          <h3>
+            Total
+          </h3>
+        </div>
+        <div
+          class="col"
+        >
+          <h3
+            class="total-product-value"
+          >
+            $300.00
+          </h3>
+        </div>
+      </div>
+      <div
+        class="row"
+      >
+        <div
+          class="col-8"
+        >
+          <h3>
+            Tax
+          </h3>
+        </div>
+        <div
+          class="col"
+        >
+          <h3>
+            0
+          </h3>
+        </div>
+      </div>
+      <div
+        class="row mt-4"
+      >
+        <div
+          class="col"
+        >
+          <button
+            class="place-order btn btn-primary"
+            type="button"
+          >
+            Place Order
+          </button>
+        </div>
+      </div>
+    </section>
+  </div>
+</DocumentFragment>
+`;
